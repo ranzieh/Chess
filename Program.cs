@@ -11,7 +11,27 @@ namespace Chess
                 game = new Game();
             else
                 game = new Game(args[0]);
-            VisualizeBoard(game);
+            
+            Console.WriteLine("Chess by ranzieh: https://github.com/ranzieh/Chess");
+            Console.WriteLine("Enter moves in Algebraic Notation (https://en.wikipedia.org/wiki/Algebraic_notation_(chess))");
+            Console.WriteLine("Have Fun!");
+            bool playing = true;
+            while (playing)
+            {
+                VisualizeBoard(game);
+                string turn = game.IsWhitesTurn()? "White" : "Black";
+                Console.WriteLine($"It is {turn}'s turn. Please enter your move:");
+                string move = Console.ReadLine();
+                if (move=="exit")
+                {
+                    playing=false;
+                    continue;
+                }
+                else
+                {
+                    game.PlayMoveAN(move);
+                }
+            }
         }
 
 
