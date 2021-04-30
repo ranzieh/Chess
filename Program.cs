@@ -6,13 +6,12 @@ namespace Chess
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
-            Console.WriteLine(game.board.Keys.Count);
-            foreach (int key in game.board.Keys)
-            {
-                char piece = (char) game.board[key];
-                Console.WriteLine(key+":"+piece);
-            }
+            Game game;
+            if (args.Length==0)
+                game = new Game();
+            else
+                game = new Game(args[0]);
+            VisualizeBoard(game);
         }
 
 
@@ -20,9 +19,41 @@ namespace Chess
         /// Visualzie the board of the given game in the Terminal with ASCII symbols.
         /// </summary>
         /// <param name="game">the given game.</param>
-        private void VisualizeBoard(Game game)
+        static void VisualizeBoard(Game game)
         {
-            
+            ConsoleColor currentBackgroundColor = Console.BackgroundColor;
+            ConsoleColor currentForegroundColor = Console.ForegroundColor;
+            bool white = true;
+
+            for (int i = 8; i > 0; i--)
+            {                
+                for (int j = 1; j < 9; j++)
+                {
+                    Console.BackgroundColor=white ? ConsoleColor.DarkGray : ConsoleColor.DarkRed;
+                    white=!white;
+
+                    int pos = j*10+i;
+                    if (game.board[pos]==null)
+                    {
+                        Console.Write("  ");
+                    }
+                    else
+                    {
+                        char piece = (char)game.board[pos];
+                        bool whitePiece = Utility.isWhitePiece(piece);
+
+                        Console.ForegroundColor=whitePiece ? ConsoleColor.White : ConsoleColor.Black;
+                        
+                        piece=Char.ToUpper(piece);
+                        Console.Write(piece+" ");
+                    }
+                }
+                Console.BackgroundColor=currentBackgroundColor;
+                Console.WriteLine();
+                white=!white;
+            }
+            Console.BackgroundColor=currentBackgroundColor;
+            Console.ForegroundColor=currentForegroundColor;
         }
     }
 }
