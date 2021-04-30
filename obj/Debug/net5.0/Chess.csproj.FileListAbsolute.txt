@@ -1,0 +1,16 @@
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.csprojAssemblyReference.cache
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.GeneratedMSBuildEditorConfig.editorconfig
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.AssemblyInfoInputs.cache
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.AssemblyInfo.cs
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.csproj.CoreCompileInputs.cache
+/home/ranzi/repos/chess/Chess/bin/Debug/net5.0/Chess
+/home/ranzi/repos/chess/Chess/bin/Debug/net5.0/Chess.deps.json
+/home/ranzi/repos/chess/Chess/bin/Debug/net5.0/Chess.runtimeconfig.json
+/home/ranzi/repos/chess/Chess/bin/Debug/net5.0/Chess.runtimeconfig.dev.json
+/home/ranzi/repos/chess/Chess/bin/Debug/net5.0/Chess.dll
+/home/ranzi/repos/chess/Chess/bin/Debug/net5.0/ref/Chess.dll
+/home/ranzi/repos/chess/Chess/bin/Debug/net5.0/Chess.pdb
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.dll
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/ref/Chess.dll
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.pdb
+/home/ranzi/repos/chess/Chess/obj/Debug/net5.0/Chess.genruntimeconfig.cache
