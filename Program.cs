@@ -16,9 +16,13 @@ namespace Chess
         }
 
 
-        private void VisualizeBoard(Board board)
+        /// <summary>
+        /// Visualzie the board of the given game in the Terminal with ASCII symbols.
+        /// </summary>
+        /// <param name="game">the given game.</param>
+        private void VisualizeBoard(Game game)
         {
-
+            
         }
     }
 }
