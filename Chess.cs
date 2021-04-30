@@ -51,7 +51,7 @@ namespace Chess
     }
     static class Utility
     {
-        static bool isWhitePiece(char piece)
+        public static bool isWhitePiece(char piece)
         {
             return !Char.IsLower(piece);
         }        

@@ -19,20 +19,13 @@ namespace Chess
         {
             ConsoleColor currentBackgroundColor = Console.BackgroundColor;
             ConsoleColor currentForegroundColor = Console.ForegroundColor;
-            bool white =true;
+            bool white =false;
 
             for (int i = 8; i > 0; i--)
             {                
                 for (int j = 1; j < 9; j++)
                 {
-                    if (white)
-                    {
-                        Console.BackgroundColor=ConsoleColor.Black;
-                    }
-                    else
-                    {
-                        Console.BackgroundColor=ConsoleColor.DarkGray;              
-                    }
+                    Console.BackgroundColor=white ? ConsoleColor.DarkGray : ConsoleColor.DarkRed;
                     white=!white;
 
                     int pos = j*10+i;
@@ -42,7 +35,13 @@ namespace Chess
                     }
                     else
                     {
-                        Console.Write(game.board[pos]+" ");
+                        char piece = (char)game.board[pos];
+                        bool whitePiece = Utility.isWhitePiece(piece);
+
+                        Console.ForegroundColor= whitePiece ? ConsoleColor.White : ConsoleColor.Black;
+                        
+                        piece=Char.ToUpper(piece);
+                        Console.Write(piece+" ");
                     }
                 }
                 Console.BackgroundColor=currentBackgroundColor;
