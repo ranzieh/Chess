@@ -28,23 +28,19 @@ namespace Chess
             int currentRow = 8;
             foreach (string row in rows)
             {
-                char currentColumn = 'A';
+                int currentColumn = 1;
                 foreach (char c in row)
                 {
-                    double value=char.GetNumericValue(c);
-                    bool isNumeric=value!=-1;
+                    double numericValue=char.GetNumericValue(c);
+                    bool isNumeric=numericValue!=-1;
                     if (isNumeric)
                     {
-                        for (int i = 0; i < value; i++)
-                        {
-                            currentColumn++;
-                        }
+                        currentColumn+=Convert.ToInt32(numericValue);
                     }
                     else
                     {
-                        char[] chars = {currentColumn, Convert.ToChar(currentRow)};
-                        string s = new string(chars);
-                        board.Add(s,c);
+                        int pos = currentColumn * 10 + currentRow; 
+                        board.Add(pos,c);
                         currentColumn++;
                     }
                 }
