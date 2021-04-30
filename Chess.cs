@@ -49,12 +49,11 @@ namespace Chess
         }
         
     }
-    class Piece
+    static class Utility
     {
-        
-    }
-    class Square
-    {
-
+        static bool isWhitePiece(char piece)
+        {
+            return !Char.IsLower(piece);
+        }        
     }
 }
