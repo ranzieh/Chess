@@ -25,26 +25,26 @@ namespace Chess
             string boardInfo=info[0];
             string[] rows=boardInfo.Split("/");  
 
-            int currentRow = 8;
+            int currentRake = 8;
             foreach (string row in rows)
             {
-                int currentColumn = 1;
+                int currentFile = 1;
                 foreach (char c in row)
                 {
                     double numericValue=char.GetNumericValue(c);
                     bool isNumeric=numericValue!=-1;
                     if (isNumeric)
                     {
-                        currentColumn+=Convert.ToInt32(numericValue);
+                        currentFile+=Convert.ToInt32(numericValue);
                     }
                     else
                     {
-                        int pos = currentColumn * 10 + currentRow; 
+                        int pos = currentFile * 10 + currentRake; 
                         board.Add(pos,c);
-                        currentColumn++;
+                        currentFile++;
                     }
                 }
-                currentRow--;
+                currentRake--;
             }
         }
         
