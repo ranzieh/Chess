@@ -42,7 +42,7 @@ namespace Chess
                         char piece = (char)game.board[pos];
                         bool whitePiece = Utility.isWhitePiece(piece);
 
-                        Console.ForegroundColor= whitePiece ? ConsoleColor.White : ConsoleColor.Black;
+                        Console.ForegroundColor=whitePiece ? ConsoleColor.White : ConsoleColor.Black;
                         
                         piece=Char.ToUpper(piece);
                         Console.Write(piece+" ");
