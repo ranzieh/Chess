@@ -7,7 +7,7 @@ namespace Chess
         public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         public Hashtable board;
         private bool whitesTurn;
-        private string reasonForInvalidMove;
+        public string reasonForInvalidMove;
 
         public Game() : this(startPosition)
         {

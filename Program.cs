@@ -29,7 +29,8 @@ namespace Chess
                 }
                 else
                 {
-                    game.PlayMoveAN(move);
+                    if(!game.PlayMoveAN(move))
+                        Console.WriteLine(game.reasonForInvalidMove);
                 }
             }
         }
