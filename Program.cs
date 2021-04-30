@@ -6,7 +6,11 @@ namespace Chess
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
+            Game game;
+            if (args.Length==0)
+                game = new Game();
+            else
+                game = new Game(args[0]);
             VisualizeBoard(game);
         }
 
@@ -19,7 +23,7 @@ namespace Chess
         {
             ConsoleColor currentBackgroundColor = Console.BackgroundColor;
             ConsoleColor currentForegroundColor = Console.ForegroundColor;
-            bool white =false;
+            bool white = true;
 
             for (int i = 8; i > 0; i--)
             {                

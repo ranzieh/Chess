@@ -20,7 +20,7 @@ namespace Chess
             board=new Hashtable();
 
             string[] info = feNotation.Split(" ");
-            Debug.Assert(info.Length>1);
+            Debug.Assert(info.Length>0);
 
             string boardInfo=info[0];
             string[] rows=boardInfo.Split("/");  
