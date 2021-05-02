@@ -99,8 +99,7 @@ namespace Chess
                             int currentpos = (targetpos%10)-direction+10*originfile;
                             if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                             {
-                                Move(currentpos,targetpos);
-                                return true;
+                                return Move(currentpos,targetpos);
                             }
                             else
                             {         
@@ -120,8 +119,7 @@ namespace Chess
                         int currentpos = targetpos-direction;
                         if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                         {
-                            Move(currentpos,targetpos);
-                            return true;
+                            return Move(currentpos,targetpos);
                         }
                         else
                         {
@@ -131,10 +129,14 @@ namespace Chess
                                 if (board[currentpos]==null)
                                 {                                    
                                     currentpos-=direction;
-                                    if (Utility.IsPawn((char)board[currentpos], whitesTurn))
+                                    if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                                     {
-                                        Move(currentpos,targetpos); 
-                                        return true;                                   
+                                        return Move(currentpos,targetpos);                                 
+                                    }
+                                    else
+                                    {
+                                        reasonForInvalidMove="There is no Pawn that can move to the specified Square.";
+                                        return false;                                        
                                     }
                                 }
                                 reasonForInvalidMove="A Piece is on the Square between your Pawn and the target Square.";
@@ -151,7 +153,6 @@ namespace Chess
                     }
                 }
             }
-            return true;
         }
 
         private char GetPiece(int currentpos)
@@ -162,11 +163,25 @@ namespace Chess
                 return (char)board[currentpos];
         }
 
-        private void Move(int currentpos, int targetpos)
+        private bool Move(int currentpos, int targetpos)
         {
-            board[targetpos]=board[currentpos];
-            board[currentpos]=null;
-            whitesTurn=!whitesTurn;
+            if (OnBoard(targetpos)&&OnBoard(currentpos))
+            {
+                board[targetpos]=board[currentpos];
+                board[currentpos]=null;
+                whitesTurn=!whitesTurn;
+                return true;                
+            }
+            else
+            {
+                reasonForInvalidMove="A Piece is on the Square you are trying to move to.";
+                return false;
+            }
+        }
+
+        private bool OnBoard(int targetpos)
+        {
+            return targetpos%10>0 && targetpos%10<9 && (targetpos-targetpos%10)>0 && (targetpos-targetpos%10)<81;
         }
     }
     static class Utility
@@ -186,7 +201,7 @@ namespace Chess
 
         internal static bool IsPawn(char piece, bool isWhite)
         {
-            if (piece == null)
+            if (piece == 'x')
                 return false;
 
             if (isWhite)
