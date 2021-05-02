@@ -102,8 +102,38 @@ namespace Chess
                     if (board[targetpos]==null)
                     {
                         if(targetpos==enPassant)
-                        reasonForInvalidMove="There is no Piece to capture on target Square.";
-                        return false;
+                        {
+                            int originfile = Char.ToUpper(move[0])-64;
+                            int targetfile = targetpos/10;
+                            if (Math.Abs(originfile-targetfile)!=1)
+                            {
+                                reasonForInvalidMove="A Pawn can only capture on adjacent Files.";
+                                return false;                                  
+                            }
+                            int currentpos = (targetpos%10)-direction+10*originfile;
+
+                            if (Utility.isWhitePiece((char)board[targetpos-direction])==whitesTurn)
+                            {
+                                //this event is theoretically unreachable in a normal game of chess
+                                reasonForInvalidMove="Invalid en Passant.";
+                                return false;
+                            }
+                            else
+                            {
+                                bool goodMove = Move(currentpos, targetpos);
+                                if (goodMove)
+                                {
+                                    board[targetpos-direction]=null;
+                                }
+                                return goodMove;
+                            }
+
+                        }
+                        else
+                        {
+                            reasonForInvalidMove="There is no Piece to capture on target Square.";
+                            return false;
+                        }
                     }
                     else
                     {
@@ -155,8 +185,12 @@ namespace Chess
                                 {                                    
                                     currentpos-=direction;
                                     if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
-                                    {
-                                        return Move(currentpos,targetpos);                                 
+                                    {                                        
+                                        bool goodMove = Move(currentpos, targetpos);
+                                        if (goodMove)
+                                        {
+                                            enPassant=targetpos-direction;
+                                        }
                                     }
                                     else
                                     {
