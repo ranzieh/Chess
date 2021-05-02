@@ -93,9 +93,22 @@ namespace Chess
                             reasonForInvalidMove="You can not capture your own Piece.";
                             return false;
                         }
+                        else
+                        {
+                            int originfile = Char.ToUpper(move[0])-64;
+                            int currentpos = (targetpos%10)-direction+10*originfile;
+                            if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
+                            {
+                                Move(currentpos,targetpos);
+                                return true;
+                            }
+                            else
+                            {         
+                                reasonForInvalidMove="You have no Pawn at that can capture like that.";
+                                return false;                                
+                            }                  
+                        }
                     }
-                    int originfile = Char.ToUpper(move[0])-64;
-                    int currentpos = (targetpos%10)-direction+10*originfile;
                 }
                 else
                 {
@@ -153,6 +166,7 @@ namespace Chess
         {
             board[targetpos]=board[currentpos];
             board[currentpos]=null;
+            whitesTurn=!whitesTurn;
         }
     }
     static class Utility
