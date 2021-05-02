@@ -7,6 +7,7 @@ namespace Chess
         public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         public Hashtable board;
         private bool whitesTurn;
+        private int enPassant;
         public string reasonForInvalidMove;
 
         public Game() : this(startPosition)
@@ -57,6 +58,23 @@ namespace Chess
             {
                 whitesTurn=true;
             }
+
+            if (info.Length>3)
+            {
+                whitesTurn = info[1]=="w";
+                if (info[3]=="-")
+                {
+                    enPassant=-1;
+                }
+                else
+                {
+                    enPassant=Utility.GetNumericPosFromAN(info[3]);
+                }
+            }
+            else
+            {
+                whitesTurn=true;
+            }
         }
 
         internal bool IsWhitesTurn()
@@ -83,6 +101,7 @@ namespace Chess
                     int targetpos = Utility.GetNumericPosFromAN(move.Substring(2,2));
                     if (board[targetpos]==null)
                     {
+                        if(targetpos==enPassant)
                         reasonForInvalidMove="There is no Piece to capture on target Square.";
                         return false;
                     }
@@ -176,6 +195,7 @@ namespace Chess
                 board[targetpos]=board[currentpos];
                 board[currentpos]=null;
                 whitesTurn=!whitesTurn;
+                enPassant=-1;
                 return true;                
             }
             else
