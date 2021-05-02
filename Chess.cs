@@ -96,6 +96,12 @@ namespace Chess
                         else
                         {
                             int originfile = Char.ToUpper(move[0])-64;
+                            int targetfile = targetpos/10;
+                            if (Math.Abs(originfile-targetfile)!=1)
+                            {
+                                reasonForInvalidMove="A Pawn can only capture on adjacent Files.";
+                                return false;                                  
+                            }
                             int currentpos = (targetpos%10)-direction+10*originfile;
                             if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                             {
@@ -174,7 +180,7 @@ namespace Chess
             }
             else
             {
-                reasonForInvalidMove="A Piece is on the Square you are trying to move to.";
+                reasonForInvalidMove="The given square is not on the Board.";
                 return false;
             }
         }
