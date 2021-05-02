@@ -77,34 +77,55 @@ namespace Chess
                 int direction = whitesTurn? 1 : -1;
 
                 //check if pawn is capturing
-                if (move.Length>2 && move[2]=='x')
+                if (move.Length>2 && move[1]=='x')
                 {
                     //pawn is capturing
+                    int targetpos = Utility.GetNumericPosFromAN(move.Substring(2,2));
+                    if (board[targetpos]==null)
+                    {
+                        reasonForInvalidMove="There is no Piece to capture on target Square.";
+                        return false;
+                    }
+                    else
+                    {
+                        if (Utility.isWhitePiece((char)board[targetpos])==whitesTurn)
+                        {                            
+                            reasonForInvalidMove="You can not capture your own Piece.";
+                            return false;
+                        }
+                    }
+                    int originfile = Char.ToUpper(move[0])-64;
+                    int currentpos = (targetpos%10)-direction+10*originfile;
                 }
                 else
                 {
                     int targetpos = Utility.GetNumericPosFromAN(move.Substring(0,2));
+                    //check if Target square is empty
                     if (board[targetpos]==null)
-                    {
+                    {                        
+                        //check if a Pawn of the correct color on the preceeding square
                         int currentpos = targetpos-direction;
-                        if (Utility.IsPawn((char)board[currentpos], whitesTurn))
+                        if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                         {
                             Move(currentpos,targetpos);
+                            return true;
                         }
                         else
                         {
+                            //check if there is a pawn who can move 2 squares
                             if ((targetpos%10==4 && whitesTurn) || (targetpos%10==5 && !whitesTurn))
                             {
                                 if (board[currentpos]==null)
                                 {                                    
-                                    reasonForInvalidMove="A Piece is on the Square between your Pawn and the target Square.";
-                                    return false;
+                                    currentpos-=direction;
+                                    if (Utility.IsPawn((char)board[currentpos], whitesTurn))
+                                    {
+                                        Move(currentpos,targetpos); 
+                                        return true;                                   
+                                    }
                                 }
-                                currentpos-=direction;
-                                if (Utility.IsPawn((char)board[currentpos], whitesTurn))
-                                {
-                                    Move(currentpos,targetpos);                                    
-                                }
+                                reasonForInvalidMove="A Piece is on the Square between your Pawn and the target Square.";
+                                return false;
                             }
                             reasonForInvalidMove="There is no Pawn that can move to the specified Square.";
                             return false;
@@ -118,6 +139,14 @@ namespace Chess
                 }
             }
             return true;
+        }
+
+        private char GetPiece(int currentpos)
+        {
+            if(board[currentpos]==null)
+                return 'x';
+            else
+                return (char)board[currentpos];
         }
 
         private void Move(int currentpos, int targetpos)
