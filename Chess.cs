@@ -359,6 +359,7 @@ namespace Chess
                 check=true;
                 move=move.Remove(move.Length - 1);
             }
+            
             if (Utility.isPromotionPiece(move[move.Length-1]))
             {
                 promotion=move[move.Length-1];
@@ -373,6 +374,7 @@ namespace Chess
             move=move.Remove(move.Length - 1);
             targetFile = Char.ToUpper(move[move.Length-1])-64;
             move=move.Remove(move.Length - 1);
+            targetSquare = targetFile * 10 + targetRank;
             piece='P';
             if (move.Length==0)
                 return;
@@ -397,6 +399,10 @@ namespace Chess
             {
                 originFile = Char.ToUpper(move[move.Length-1])-64;
                 move=move.Remove(move.Length - 1);
+            }
+            if (originFile!=0 && originRank!=0)
+            {
+                originSquare = originFile * 10 + originRank;
             }
             if (move.Length==0)
                 return;            
