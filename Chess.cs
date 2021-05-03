@@ -154,7 +154,25 @@ namespace Chess
                             int currentpos = (targetpos%10)-direction+10*originfile;
                             if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                             {
-                                return Move(currentpos,targetpos);
+                                bool goodMove = Move(currentpos,targetpos);
+                                if ((targetpos%10==8 || targetpos%10==1)&&goodMove)
+                                    {
+                                        char promotion = move[move.Length-1];
+                                        if (Utility.isPromotionPiece(promotion))
+                                        {
+                                            if (whitesTurn)
+                                            {
+                                                promotion = Char.ToLower(promotion);
+                                            }
+                                            board[targetpos] = promotion;
+                                        }
+                                        else
+                                        {
+                                            char queen = whitesTurn ? 'q' : 'Q';
+                                            board[targetpos]=queen;                                                
+                                        }
+                                    }
+                                return goodMove;
                             }
                             else
                             {         
@@ -174,7 +192,25 @@ namespace Chess
                         int currentpos = targetpos-direction;
                         if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                         {
-                            return Move(currentpos,targetpos);
+                            bool goodMove = Move(currentpos,targetpos);
+                            if ((targetpos%10==8 || targetpos%10==1)&&goodMove)
+                            {
+                                char promotion = move[move.Length-1];
+                                if (Utility.isPromotionPiece(promotion))
+                                {
+                                    if (whitesTurn)
+                                    {
+                                        promotion = Char.ToLower(promotion);
+                                    }
+                                    board[targetpos] = promotion;
+                                }
+                                else
+                                {
+                                    char queen = whitesTurn ? 'q' : 'Q';
+                                    board[targetpos]=queen;                                                
+                                }
+                            }
+                            return goodMove;
                         }
                         else
                         {
@@ -246,6 +282,7 @@ namespace Chess
     }
     static class Utility
     {
+        static string promotionPieces = "RNBQ";
         public static bool isWhitePiece(char piece)
         {
             return !Char.IsLower(piece);
@@ -268,6 +305,11 @@ namespace Chess
                 return piece=='P';
             else
                 return piece=='p';
+        }
+
+        internal static bool isPromotionPiece(char promotion)
+        {
+            return promotionPieces.Contains(promotion);
         }
     }
 }
