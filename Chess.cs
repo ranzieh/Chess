@@ -86,7 +86,22 @@ namespace Chess
             if (Char.IsUpper(move[0]))
             {
                 //non-pawn move
-                throw new NotImplementedException("Non pawn moves are not implemented yet. Try a pawn move!");
+                switch(move[0])
+                {
+                    case 'Q':
+                    break;
+                    case 'B':
+                    break;
+                    case 'R':
+                    break;
+                    case 'N':
+                    break;
+                    case 'K':
+                    break;
+                    default:
+                    reasonForInvalidMove=move[0] + " is not a piece in algebraic notation";
+                    return false;
+                }
             }
             else
             {
