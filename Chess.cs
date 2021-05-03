@@ -348,6 +348,7 @@ namespace Chess
         public int originFile;
         public int originRank;
         public char piece;
+        public char promotion;
         public bool capture;
         public bool check;
 
@@ -357,6 +358,15 @@ namespace Chess
             {
                 check=true;
                 move=move.Remove(move.Length - 1);
+            }
+            if (Utility.isPromotionPiece(move[move.Length-1]))
+            {
+                promotion=move[move.Length-1];
+                move=move.Remove(move.Length - 1);
+                if (move[move.Length-1]=='=')
+                {
+                    move=move.Remove(move.Length - 1);
+                }
             }
 
             targetRank = Convert.ToInt32(Char.GetNumericValue(move[move.Length-1]));
