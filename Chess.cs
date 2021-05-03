@@ -89,14 +89,19 @@ namespace Chess
                 switch(move[0])
                 {
                     case 'Q':
+                    return false;
                     break;
                     case 'B':
+                    return false;
                     break;
                     case 'R':
+                    return false;
                     break;
                     case 'N':
+                    return false;
                     break;
                     case 'K':
+                    return false;
                     break;
                     default:
                     reasonForInvalidMove=move[0] + " is not a piece in algebraic notation";
@@ -134,7 +139,7 @@ namespace Chess
                             }
                             else
                             {
-                                bool goodMove = Move(currentpos, targetpos);
+                                bool goodMove = MakeMove(currentpos, targetpos);
                                 if (goodMove)
                                 {
                                     board[targetpos-direction]=null;
@@ -166,9 +171,9 @@ namespace Chess
                                 return false;                                  
                             }
                             int currentpos = (targetpos%10)-direction+10*originfile;
-                            if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
+                            if (Utility.isPawn(GetPiece(currentpos), whitesTurn))
                             {
-                                bool goodMove = Move(currentpos,targetpos);
+                                bool goodMove = MakeMove(currentpos,targetpos);
                                 if ((targetpos%10==8 || targetpos%10==1)&&goodMove)
                                     {
                                         char promotion = move[move.Length-1];
@@ -204,9 +209,9 @@ namespace Chess
                     {                        
                         //check if a Pawn of the correct color on the preceeding square
                         int currentpos = targetpos-direction;
-                        if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
+                        if (Utility.isPawn(GetPiece(currentpos), whitesTurn))
                         {
-                            bool goodMove = Move(currentpos,targetpos);
+                            bool goodMove = MakeMove(currentpos,targetpos);
                             if ((targetpos%10==8 || targetpos%10==1)&&goodMove)
                             {
                                 char promotion = move[move.Length-1];
@@ -234,9 +239,9 @@ namespace Chess
                                 if (board[currentpos]==null)
                                 {                                    
                                     currentpos-=direction;
-                                    if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
+                                    if (Utility.isPawn(GetPiece(currentpos), whitesTurn))
                                     {                                        
-                                        bool goodMove = Move(currentpos, targetpos);
+                                        bool goodMove = MakeMove(currentpos, targetpos);
                                         if (goodMove)
                                         {
                                             enPassant=targetpos-direction;
@@ -272,7 +277,7 @@ namespace Chess
                 return (char)board[currentpos];
         }
 
-        private bool Move(int currentpos, int targetpos)
+        private bool MakeMove(int currentpos, int targetpos)
         {
             if (OnBoard(targetpos)&&OnBoard(currentpos))
             {
@@ -298,6 +303,7 @@ namespace Chess
     {
         public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         static string promotionPieces = "RNBQ";
+        static string pieces = "RNBQKP";
         public static bool isWhitePiece(char piece)
         {
             return !Char.IsLower(piece);
@@ -311,7 +317,7 @@ namespace Chess
             return rv;
         }
 
-        internal static bool IsPawn(char piece, bool isWhite)
+        internal static bool isPawn(char piece, bool isWhite)
         {
             if (piece == 'x')
                 return false;
@@ -322,9 +328,74 @@ namespace Chess
                 return piece=='p';
         }
 
-        internal static bool isPromotionPiece(char promotion)
+        internal static bool isPromotionPiece(char v)
         {
-            return promotionPieces.Contains(promotion);
+            return promotionPieces.Contains(v);
+        }
+
+        internal static bool isPieceChar(char v)
+        {
+            return pieces.Contains(v);
+        }
+    }
+
+    class Move
+    {
+        public int targetSquare;
+        public int targetFile;
+        public int targetRank;
+        public int originSquare;
+        public int originFile;
+        public int originRank;
+        public char piece;
+        public bool capture;
+        public bool check;
+
+        public Move(string move)
+        {
+            if (move[move.Length-1]=='#' || move[move.Length-1]=='+')
+            {
+                check=true;
+                move=move.Remove(move.Length - 1);
+            }
+
+            targetRank = Convert.ToInt32(Char.GetNumericValue(move[move.Length-1]));
+            move=move.Remove(move.Length - 1);
+            targetFile = Char.ToUpper(move[move.Length-1])-64;
+            move=move.Remove(move.Length - 1);
+            piece='P';
+            if (move.Length==0)
+                return;
+
+            if (move[move.Length-1]=='x')
+            {
+                capture=true;
+                move=move.Remove(move.Length - 1);
+            }
+            if (move.Length==0)
+                return;
+
+            if (Char.IsDigit(move[move.Length-1]))
+            {
+                originRank=Convert.ToInt32(Char.GetNumericValue(move[move.Length-1]));
+                move=move.Remove(move.Length - 1);
+            }
+            if (move.Length==0)
+                return;
+
+            if (Char.IsLower(move[move.Length-1]))
+            {
+                originFile = Char.ToUpper(move[move.Length-1])-64;
+                move=move.Remove(move.Length - 1);
+            }
+            if (move.Length==0)
+                return;            
+
+            if (Utility.isPieceChar(move[move.Length-1]))
+            {
+                piece = move[move.Length-1];
+                move=move.Remove(move.Length - 1);
+            }
         }
     }
 }
