@@ -4,13 +4,12 @@ using System.Diagnostics;
 namespace Chess
 {    class Game
     {
-        public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         public Hashtable board;
         private bool whitesTurn;
         private int enPassant;
         public string reasonForInvalidMove;
 
-        public Game() : this(startPosition)
+        public Game() : this(Utility.startPosition)
         {
         }
 
@@ -282,6 +281,7 @@ namespace Chess
     }
     static class Utility
     {
+        public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         static string promotionPieces = "RNBQ";
         public static bool isWhitePiece(char piece)
         {
