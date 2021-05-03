@@ -4,13 +4,12 @@ using System.Diagnostics;
 namespace Chess
 {    class Game
     {
-        public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         public Hashtable board;
         private bool whitesTurn;
         private int enPassant;
         public string reasonForInvalidMove;
 
-        public Game() : this(startPosition)
+        public Game() : this(Utility.startPosition)
         {
         }
 
@@ -87,7 +86,22 @@ namespace Chess
             if (Char.IsUpper(move[0]))
             {
                 //non-pawn move
-                throw new NotImplementedException("Non pawn moves are not implemented yet. Try a pawn move!");
+                switch(move[0])
+                {
+                    case 'Q':
+                    break;
+                    case 'B':
+                    break;
+                    case 'R':
+                    break;
+                    case 'N':
+                    break;
+                    case 'K':
+                    break;
+                    default:
+                    reasonForInvalidMove=move[0] + " is not a piece in algebraic notation";
+                    return false;
+                }
             }
             else
             {
@@ -154,7 +168,25 @@ namespace Chess
                             int currentpos = (targetpos%10)-direction+10*originfile;
                             if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                             {
-                                return Move(currentpos,targetpos);
+                                bool goodMove = Move(currentpos,targetpos);
+                                if ((targetpos%10==8 || targetpos%10==1)&&goodMove)
+                                    {
+                                        char promotion = move[move.Length-1];
+                                        if (Utility.isPromotionPiece(promotion))
+                                        {
+                                            if (whitesTurn)
+                                            {
+                                                promotion = Char.ToLower(promotion);
+                                            }
+                                            board[targetpos] = promotion;
+                                        }
+                                        else
+                                        {
+                                            char queen = whitesTurn ? 'q' : 'Q';
+                                            board[targetpos]=queen;                                                
+                                        }
+                                    }
+                                return goodMove;
                             }
                             else
                             {         
@@ -174,7 +206,25 @@ namespace Chess
                         int currentpos = targetpos-direction;
                         if (Utility.IsPawn(GetPiece(currentpos), whitesTurn))
                         {
-                            return Move(currentpos,targetpos);
+                            bool goodMove = Move(currentpos,targetpos);
+                            if ((targetpos%10==8 || targetpos%10==1)&&goodMove)
+                            {
+                                char promotion = move[move.Length-1];
+                                if (Utility.isPromotionPiece(promotion))
+                                {
+                                    if (whitesTurn)
+                                    {
+                                        promotion = Char.ToLower(promotion);
+                                    }
+                                    board[targetpos] = promotion;
+                                }
+                                else
+                                {
+                                    char queen = whitesTurn ? 'q' : 'Q';
+                                    board[targetpos]=queen;                                                
+                                }
+                            }
+                            return goodMove;
                         }
                         else
                         {
@@ -246,6 +296,8 @@ namespace Chess
     }
     static class Utility
     {
+        public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        static string promotionPieces = "RNBQ";
         public static bool isWhitePiece(char piece)
         {
             return !Char.IsLower(piece);
@@ -268,6 +320,11 @@ namespace Chess
                 return piece=='P';
             else
                 return piece=='p';
+        }
+
+        internal static bool isPromotionPiece(char promotion)
+        {
+            return promotionPieces.Contains(promotion);
         }
     }
 }
