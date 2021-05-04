@@ -4,9 +4,9 @@ using System.Diagnostics;
 namespace Chess
 {    class Game
     {
-        public Hashtable board;
-        private bool whitesTurn;
-        private int enPassant;
+        internal Hashtable board;
+        internal bool whitesTurn;
+        internal int enPassant;
         public string reasonForInvalidMove;
 
         public Game() : this(Utility.startPosition)
@@ -269,12 +269,20 @@ namespace Chess
             }
         }
 
-        private char GetPiece(int currentpos)
+        internal char GetPiece(int pos)
         {
-            if(board[currentpos]==null)
+            if(board[pos]==null)
                 return 'x';
             else
-                return (char)board[currentpos];
+                return (char)board[pos];
+        }
+
+        internal char GetPiece(int file, int rank)
+        {
+            if(board[file * 10 + rank]==null)
+                return 'x';
+            else
+                return (char)board[file * 10 + rank];
         }
 
         private bool MakeMove(int currentpos, int targetpos)
@@ -304,6 +312,38 @@ namespace Chess
         public static string startPosition="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         static string promotionPieces = "RNBQ";
         static string pieces = "RNBQKP";
+
+        /// <summary>
+        /// tries to complete and verify the Move with given board.
+        /// </summary>
+        /// <param name="move">the move</param>
+        /// <param name="board">the board</param>
+        public static void CompleteAndVerifyMove(Move move, Game game)
+        {
+            switch (move.piece)
+            {
+                case 'P':
+                    // check if promotion piece is set. if not set it to queen.
+                    if ((move.targetRank==8||move.targetRank==1)&&!isPromotionPiece(move.promotion))
+                    {
+                        move.promotion='Q';
+                    }
+
+                    if (move.capture)
+                    {
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                    break;
+                default:
+                throw new NotImplementedException($"Moves for {move.piece} aren't implemented");
+                
+            }
+        }
+
         public static bool isWhitePiece(char piece)
         {
             return !Char.IsLower(piece);
@@ -351,6 +391,8 @@ namespace Chess
         public char promotion;
         public bool capture;
         public bool check;
+        public int resultingEnPassant;
+        public int resultingCapture;
 
         public Move(string move)
         {
